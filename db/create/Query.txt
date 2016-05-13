@@ -1,0 +1,76 @@
+create table constituency
+(
+cons_id number(3) constraint pk_cons_id primary key,
+cons_name varchar2(20) constraint c_cons_name not null
+)
+
+
+create table candidate
+(
+c_id number(3) constraint pk_c_id primary key,
+cons_id number(3) constraint fk_cons_id references constituency(cons_id),
+c_name varchar2(30) constraint c_c_name not null,
+c_age number(3) constraint c_c_age check(c_age>25),
+c_symbol blob,
+c_qualification varchar2(30) constraint c_c_qual not null,
+c_description varchar2(200)
+)
+
+
+alter table candidate add pid number(3) constraint c_pid references party(pid)
+alter table candidate add profile_pic blob
+
+create table candidateVotes
+(
+c_sr_id number(3) constraint pk_c_sr_id primary key,
+c_id number(3) constraint fk_c_id references candidate(c_id),
+c_vote number(10) constraint c_c_vote check(c_vote >=0)
+
+)
+
+create table voted(
+svid number(11) constraint pk_svid primary key,
+vid number(3) constraint fk_vid references Voterdetails,
+c_id number(3) constraint fk_candi_id references Candidate)
+
+
+
+create table Party
+(
+pid number(3) constraint pk_p_id primary key,
+pname varchar2(20) constraint nn_pname not null,
+psymbol blob
+
+)
+
+
+
+
+
+
+
+create table voterInfo
+(
+vid number(12) constraint c_uid11 primary key,
+vpassword varchar2(30) constraint c_upassword11 check(length(vpassword)>5 and length(vpassword)<10),
+vname varchar2(30) constraint c_vanme11 not null,
+cons_id number(3) constraint fk_cons_id111 references constituency(cons_id),
+vaddress varchar2(256),
+vemailid varchar2(50) constraint c_emailid11 not null,
+vphno number(10)
+
+)
+
+
+alter table modifyvoterInfo drop constraint c_upassword111
+create table modifyvoterInfo
+(
+vid number(12) constraint c_uid111 primary key,
+vpassword varchar2(30) constraint c_upassword111 check(length(vpassword)>5 and length(vpassword)<10),
+vname varchar2(30) constraint c_vanme111 not null,
+cons_id number(3) constraint fk_cons_id1111 references constituency(cons_id),
+vaddress varchar2(256),
+vemailid varchar2(50) constraint c_emailid111 not null,
+vphno number(10)
+
+)
